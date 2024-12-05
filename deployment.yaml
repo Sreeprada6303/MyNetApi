@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mynetapi-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mynetapi
+  template:
+    metadata:
+      labels:
+        app: mynetapi
+    spec:
+      containers:
+      - name: mynetapi
+        image: mydockerhubusername/mynetapi:latest
+        ports:
+        - containerPort: 8080  # Should match your Dockerfile EXPOSE port
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mynetapi-service
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    app: mynetapi
