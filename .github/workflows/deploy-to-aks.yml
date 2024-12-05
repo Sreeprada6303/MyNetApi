@@ -32,12 +32,12 @@ jobs:
 
     # Step 5: Set up Azure CLI for AKS Deployment
     - name: Set Up Azure CLI
-      uses: azure/setup-azure@v2
+      uses: azure/azure-cli-action@v1  # Correct action for Azure CLI setup
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     # Step 6: Deploy to AKS using kubectl
     - name: Deploy to AKS
       run: |
-        az aks get-credentials --resource-group MyResourceGroup --name MyAKSCluster
+        az aks get-credentials --resource-group MyNetApiResourceGroup --name MyAKSCluster
         kubectl apply -f deployment.yaml
