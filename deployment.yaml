@@ -13,20 +13,20 @@ spec:
         app: mynetapi
     spec:
       containers:
-      - name: helloworld-dotnet
-        image: mydockerhubusername/helloworld-dotnet:latest
+      - name: mynetapi
+        image: mydockerhubusername/mynetapi:${{ github.sha }}  # Corrected to the right image
         ports:
-        - containerPort: 8080  # Should match your Dockerfile EXPOSE port
+        - containerPort: 8080  # Ensure this matches your Dockerfile EXPOSE port
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: helloworld-dotnet-service
+  name: mynetapi-service  # Changed the service name to match the application
 spec:
   type: LoadBalancer
   ports:
   - port: 80
     targetPort: 8080
   selector:
-    app: helloworld-dotnet
+    app: mynetapi  # Ensure this selector matches the app label
