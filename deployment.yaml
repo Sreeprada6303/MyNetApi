@@ -13,8 +13,8 @@ spec:
         app: mynetapi
     spec:
       containers:
-      - name: mynetapi
-        image: mydockerhubusername/mynetapi:latest
+      - name: helloworld-dotnet
+        image: mydockerhubusername/helloworld-dotnet:latest
         ports:
         - containerPort: 8080  # Should match your Dockerfile EXPOSE port
 
@@ -22,11 +22,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: mynetapi-service
+  name: helloworld-dotnet-service
 spec:
   type: LoadBalancer
   ports:
   - port: 80
     targetPort: 8080
   selector:
-    app: mynetapi
+    app: helloworld-dotnet
