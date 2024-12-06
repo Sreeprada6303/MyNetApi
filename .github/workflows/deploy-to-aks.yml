@@ -17,7 +17,7 @@ jobs:
 
     # Step 2: Build Docker image
     - name: Build Docker Image
-      run: docker build -t sree6303/mynetapi:${{ github.sha }} .
+      run: docker build -t sree6303/mynetapi:${{ github.sha }} -f src/MyNetApi/Dockerfile .
 
     # Step 3: Log in to DockerHub
     - name: Log in to DockerHub
@@ -28,7 +28,7 @@ jobs:
 
     # Step 4: Push Docker image to DockerHub
     - name: Push Docker Image
-      run: docker push mydockerhubusername/mynetapi:${{ github.sha }} -f src/MyNetApi/Dockerfile .
+      run: docker push mydockerhubusername/mynetapi:${{ github.sha }} 
 
     # Step 5: Set up Azure CLI for AKS Deployment
     - name: Set Up Azure CLI
