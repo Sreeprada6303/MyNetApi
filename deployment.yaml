@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: mynetapi
-        image: mydockerhubusername/mynetapi:${{ github.sha }}  # Corrected to the right image
+        image: sree6303/mynetapi:${{ github.sha }}  # Corrected to the right image
         ports:
         - containerPort: 8080  # Ensure this matches your Dockerfile EXPOSE port
 
