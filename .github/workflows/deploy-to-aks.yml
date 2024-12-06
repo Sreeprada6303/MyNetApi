@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - master
-  workflow_dispatch:  # Allow manual trigger from GitHub Actions UI
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
@@ -15,9 +15,9 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v3
 
-    # Step 2: Build Docker image
+    # Step 2: Build Docker image with the commit SHA tag
     - name: Build Docker Image
-      run: docker build -t sree6303/mynetapi:latest${{ github.sha }} -f MyNetApi/Dockerfile .
+      run: docker build -t sree6303/mynetapi:${{ github.sha }} -f MyNetApi/Dockerfile MyNetApi/
 
     # Step 3: Log in to DockerHub
     - name: Log in to DockerHub
@@ -28,15 +28,20 @@ jobs:
 
     # Step 4: Push Docker image to DockerHub
     - name: Push Docker Image
-      run: docker push sree6303/mynetapi:latest${{ github.sha }} 
+      run: docker push sree6303/mynetapi:${{ github.sha }}
 
-    # Step 5: Set up Azure CLI for AKS Deployment
+    # Step 5: Update deployment.yaml dynamically
+    - name: Update Deployment YAML
+      run: |
+        sed -i 's|sree6303/mynetapi:latest|sree6303/mynetapi:${{ github.sha }}|' deployment.yaml
+
+    # Step 6: Set up Azure CLI for AKS Deployment
     - name: Set Up Azure CLI
-      uses: azure/login@v2  # Use the correct Azure setup action
+      uses: azure/login@v2
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    # Step 6: Deploy to AKS using kubectl
+    # Step 7: Deploy to AKS using kubectl
     - name: Deploy to AKS
       run: |
         az aks get-credentials --resource-group MyNetApiResourceGroup --name MyAKSCluster
